@@ -163,6 +163,31 @@ print("Data generation complete. Files saved as CSV, JSON, and SQL dump.")
 ```
 This section writes an SQL script to create the database schema and insert generated data. The structured format ensures the dataset is relational and follows best database practices.
 
+### Step 3: Setting Up MySQL with Docker
+To deploy our generated data into a MySQL database, we use Docker. Below is our docker-compose.yml configuration:
+
+```YAML
+version: '3.8'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql_container
+    env_file:
+      - .env
+    volumes:
+      - ./mysql_dump.sql:/docker-entrypoint-initdb.d/mysql_dump.sql
+    ports:
+      - "3306:3306"
+```
+Additionally, we define our .env file with the necessary credentials:
+
+```
+MYSQL_ROOT_PASSWORD=root_password
+MYSQL_DATABASE=test_db
+MYSQL_USER=user
+MYSQL_PASSWORD=user_password
+```
+
 ### Next Steps: Deploying and Expanding Our Project
 
 Now that we have successfully generated data and set up MySQL in Docker, we can further develop our project in several ways:
